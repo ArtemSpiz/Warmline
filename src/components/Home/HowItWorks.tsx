@@ -56,7 +56,7 @@ function HowItWorks() {
 
     ScrollTrigger.create({
       trigger: section,
-      start: "center center",
+      start: "bottom bottom",
       end: `+=${scrollDistance}`,
       pin: sticky,
       pinSpacing: true,
