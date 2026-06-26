@@ -6,6 +6,7 @@ import DownArrow from "./ui/DownArrow";
 import Icon from "./assets/Icon1.png";
 import Burger from "./assets/burger.png";
 import Close from "./assets/closeBurger.png";
+import ArrowNarrow from "./ui/ArrowNarrow";
 
 type NavItem = {
   title: string;
@@ -116,7 +117,6 @@ function Header() {
           isDropdownOpen ? "bg-white shadow-xl" : "bg-transparent"
         }`}
       >
-        {/* Header bar */}
         <div className="flex justify-between items-center px-16 max-xl:px-10 max-md:px-5 pt-6 pb-5">
           <div className="flex items-center gap-10 max-xl:gap-5">
             <div className="w-40 h-auto">
@@ -126,7 +126,6 @@ function Header() {
               />
             </div>
 
-            {/* Desktop nav */}
             <nav className="flex items-center gap-1 max-lg:hidden">
               {navigation.map((item) => {
                 if (item.type === "link") {
@@ -183,7 +182,6 @@ function Header() {
               Log in
             </a>
 
-            {/* Desktop CTA */}
             <div className="max-lg:hidden">
               <CustomButton
                 text="Browse Marketplace"
@@ -235,26 +233,14 @@ function Header() {
                     className="group flex items-center justify-between gap-3 py-4 border-b border-[#01102026] px-0 text-sm text-[#011020CC] hover:text-blue-600 hover:border-blue-600 transition-colors duration-150"
                   >
                     <div className="flex items-center gap-3">
-                      <span className="w-5 h-5 text-gray-400 group-hover:text-blue-500 flex-shrink-0">
+                      <span className="w-5 h-5 text-[#011020CC] group-hover:text-blue-500 flex-shrink-0">
                         {navItem.icon && (
                           <img src={navItem.icon} className="w-5 h-5" />
                         )}
                       </span>
                       {navItem.title}
                     </div>
-                    <svg
-                      className="w-4 h-4 text-gray-300 group-hover:text-blue-400"
-                      viewBox="0 0 16 16"
-                      fill="none"
-                    >
-                      <path
-                        d="M4 12L12 4M12 4H6M12 4v6"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
+                    <ArrowNarrow className="text-[#011020CC] group-hover:text-blue-500 transition-colors" />
                   </a>
                 ))}
               </div>

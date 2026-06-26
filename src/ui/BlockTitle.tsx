@@ -35,24 +35,36 @@ export default function BlockTitle({
       `}
     >
       <div
-        className={`underTitle flex items-center gap-2 ${
-          LightVariant ? "text-[#0052A4]" : "text-[#97C8F9]"
-        }`}
+        className={`
+        flex flex-col w-full
+        ${align === "center" ? "items-center text-center" : "items-start text-left"}
+        ${
+          alignMobile === "center"
+            ? "max-md:items-center max-md:text-center"
+            : "max-md:items-start max-md:text-left"
+        }
+      `}
       >
         <div
-          className={`h-1.5 w-1.5 rounded-full ${
-            LightVariant ? "bg-[#0052A4]" : "bg-white"
+          className={`underTitle flex items-center gap-2 ${
+            LightVariant ? "text-[#0052A4]" : "text-[#97C8F9]"
           }`}
-        />
-        {underTitle}
-      </div>
+        >
+          <div
+            className={`h-1.5 w-1.5 rounded-full ${
+              LightVariant ? "bg-[#0052A4]" : "bg-white"
+            }`}
+          />
+          {underTitle}
+        </div>
 
-      <div
-        className={`title ${
-          LightVariant ? "text-[#011020]" : "text-[#97C8F9]"
-        }`}
-      >
-        {title}
+        <div
+          className={`title ${
+            LightVariant ? "text-[#011020]" : "text-[#97C8F9]"
+          }`}
+        >
+          {title}
+        </div>
       </div>
 
       {subtitle && (

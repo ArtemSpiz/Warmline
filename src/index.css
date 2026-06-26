@@ -20,7 +20,7 @@ button {
 
 @layer components {
   .container-custom {
-    @apply mx-auto max-w-[1600px] px-16 py-24 max-xl:px-10 max-xl:py-20 max-md:px-5 max-md:py-16;
+    @apply mx-auto flex max-w-[1600px] px-16 py-24 max-xl:px-10 max-xl:py-20 max-md:px-5 max-md:py-16;
   }
 
   .underTitle {
