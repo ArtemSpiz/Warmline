@@ -48,9 +48,10 @@ function HowItWorks() {
       ? (cardsRef.current[0]?.offsetHeight ?? window.innerHeight)
       : window.innerHeight;
 
-    const scrollDistance = (totalCards - 1) * slideHeight;
+    const scrollDistance = isMobile
+      ? (totalCards - 1) * slideHeight + 500
+      : (totalCards - 1) * slideHeight;
 
-    // Встановлюємо висоту секції щоб ScrollTrigger мав де скролити
     section.style.minHeight = `${scrollDistance + window.innerHeight}px`;
 
     cards.forEach((card, i) => {
@@ -68,7 +69,8 @@ function HowItWorks() {
       start: "top top",
       end: `+=${scrollDistance}`,
       pin: sticky,
-      pinSpacing: false, // висотою керуємо самі через minHeight
+      pinSpacing: false,
+      markers: true,
     });
 
     cards.forEach((card, i) => {

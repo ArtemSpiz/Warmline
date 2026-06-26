@@ -74,7 +74,7 @@ function Services() {
                 {item.coming && (
                   <div className="flex gap-1.5 items-center px-2 py-1 rounded-full bg-[#8088901A]">
                     <div className="rounded-full w-1 h-1 bg-[#01102099]"></div>
-                    <div className="text-[#01102099] font-geist text-sm">
+                    <div className="text-[#01102099] font-geist text-sm max-md:text-xs">
                       Coming soon
                     </div>
                   </div>
