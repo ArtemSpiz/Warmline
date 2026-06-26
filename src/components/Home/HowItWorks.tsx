@@ -41,8 +41,14 @@ function HowItWorks() {
 
     if (!section || !sticky || cards.length === 0) return;
 
+    const isMobile = window.innerWidth < 768;
     const totalCards = cards.length;
-    const scrollDistance = (totalCards - 1) * window.innerHeight;
+
+    const slideHeight = isMobile
+      ? (cardsRef.current[0]?.offsetHeight ?? window.innerHeight)
+      : window.innerHeight;
+
+    const scrollDistance = (totalCards - 1) * slideHeight;
 
     cards.forEach((card, i) => {
       if (i === 0) return;
@@ -56,7 +62,7 @@ function HowItWorks() {
 
     ScrollTrigger.create({
       trigger: section,
-      start: "bottom bottom",
+      start: "top top",
       end: `+=${scrollDistance}`,
       pin: sticky,
       pinSpacing: true,
