@@ -28,7 +28,7 @@ button {
   }
 
   .title {
-    @apply text-[40px] font-bold  max-xl:text-4xl max-md:text-3xl;
+    @apply text-[40px] font-bold  max-xl:text-4xl max-md:text-3xl leading-[110%];
   }
 
   .subtitle {

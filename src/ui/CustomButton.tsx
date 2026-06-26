@@ -9,7 +9,7 @@ type CustomButtonProps = {
 function CustomButton({ text, icon, variant = "light" }: CustomButtonProps) {
   const styles = {
     light: "bg-white text-[#0052A4] border-[#FFFFFF1A]",
-    blue: "bg-[#1968B8] text-white border-[#3077BE]",
+    blue: "bg-[#026EDC] text-white border-[#3077BE]",
     ghost: "bg-[#004B970F] text-[#011020] border-[#004B971A]",
   };
 

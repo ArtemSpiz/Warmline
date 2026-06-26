@@ -56,7 +56,7 @@ function HowItWorks() {
 
     ScrollTrigger.create({
       trigger: section,
-      start: "top top",
+      start: "center center",
       end: `+=${scrollDistance}`,
       pin: sticky,
       pinSpacing: true,
@@ -114,7 +114,7 @@ function HowItWorks() {
                 ref={(el) => {
                   cardsRef.current[i] = el;
                 }}
-                className="absolute inset-0 flex flex-row max-md:flex-col rounded-xl overflow-hidden will-change-transform max-md:h-182"
+                className="absolute inset-0 flex flex-row max-md:flex-col rounded-xl overflow-hidden will-change-transform max-md:h-182 max-md:my-auto"
                 style={{ zIndex: i + 1 }}
               >
                 <div className="w-1/2 h-full max-md:w-full max-md:h-[55%] ">
@@ -146,17 +146,15 @@ function HowItWorks() {
                         {Cards.map((_, dotIdx) => (
                           <div
                             key={dotIdx}
-                            className="rounded-full transition-all duration-300"
+                            className="rounded-full transition-all duration-300 w-2.5 h-2.5 max-md:w-1.5 max-md:h-1.5"
                             style={{
-                              width: "10px",
-                              height: "10px",
                               background:
                                 dotIdx === i ? "#011020" : "#01102033",
                             }}
                           />
                         ))}
                       </div>
-                      <div className="text-[#01102080] text-sm">
+                      <div className="text-[#01102080] text-sm max-md:text-xs">
                         0{i + 1} of 0{Cards.length}
                       </div>
                     </div>
