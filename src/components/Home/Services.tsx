@@ -1,9 +1,9 @@
-import BlockTitle from "../ui/BlockTitle";
-import Icon1 from "../assets/LinkedIn.png";
-import Icon2 from "../assets/Reddit.png";
-import Icon3 from "../assets/X.png";
-import Image1 from "../assets/ServicesCardImage.png";
-import ArrowNarrow from "../ui/ArrowNarrow";
+import BlockTitle from "../../ui/BlockTitle";
+import Icon1 from "../../assets/LinkedIn.png";
+import Icon2 from "../../assets/Reddit.png";
+import Icon3 from "../../assets/X.png";
+import Image1 from "../../assets/ServicesCardImage.png";
+import ArrowNarrow from "../../ui/ArrowNarrow";
 
 const Socials = [
   {

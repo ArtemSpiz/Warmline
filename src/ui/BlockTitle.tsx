@@ -36,7 +36,7 @@ export default function BlockTitle({
     >
       <div
         className={`
-        flex flex-col w-full
+        flex flex-col w-full gap-2
         ${align === "center" ? "items-center text-center" : "items-start text-left"}
         ${
           alignMobile === "center"
