@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+body {
+  @apply bg-white text-[#011020] font-geist font-orbitron text-base  transition-all;
+}
+
+img {
+  @apply w-full;
+}
+
+button {
+  @apply cursor-pointer;
+}
+
+@theme {
+  --font-orbitron: "Orbitron", sans-serif;
+  --font-geist: "Geist", sans-serif;
+  --font-geistMono: "GeistMono", sans-serif;
+}
+
+@layer components {
+  .container-custom {
+    @apply mx-auto max-w-[1600px] px-16 py-24 max-xl:px-10 max-xl:py-20 max-md:px-5 max-md:py-16;
+  }
+
+  .underTitle {
+    @apply text-xl font-geistMono font-medium leading-none max-md:text-base;
+  }
+
+  .title {
+    @apply text-[40px] font-bold  max-xl:text-4xl max-md:text-3xl;
+  }
+
+  .subtitle {
+    @apply font-geist text-xl max-xl:text-base max-md:text-sm;
+  }
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll {
+  display: flex;
+  width: max-content;
+  animation: scroll 20s linear infinite;
+}
+
+.noScroll {
+  scrollbar-width: none;
+}
