@@ -50,6 +50,9 @@ function HowItWorks() {
 
     const scrollDistance = (totalCards - 1) * slideHeight;
 
+    // Встановлюємо висоту секції щоб ScrollTrigger мав де скролити
+    section.style.minHeight = `${scrollDistance + window.innerHeight}px`;
+
     cards.forEach((card, i) => {
       if (i === 0) return;
       gsap.set(card, {
@@ -65,7 +68,7 @@ function HowItWorks() {
       start: "top top",
       end: `+=${scrollDistance}`,
       pin: sticky,
-      pinSpacing: true,
+      pinSpacing: false, // висотою керуємо самі через minHeight
     });
 
     cards.forEach((card, i) => {
@@ -100,6 +103,7 @@ function HowItWorks() {
 
     return () => {
       ScrollTrigger.getAll().forEach((t) => t.kill());
+      section.style.minHeight = "";
     };
   }, []);
 
