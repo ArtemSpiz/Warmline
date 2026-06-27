@@ -29,7 +29,6 @@ const Cards = [
   },
 ];
 
-// Повертає реальну висоту вьюпорту, безпечну для Safari
 function getViewportHeight(): number {
   return window.visualViewport?.height ?? window.innerHeight;
 }
@@ -116,14 +115,12 @@ function HowItWorks() {
       setTimeout(init, 100);
     });
 
-    // Debounce — перебудовуємо тільки після зупинки resize, не під час скролу
     let resizeTimer: ReturnType<typeof setTimeout>;
     const onResize = () => {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(init, 250);
     };
 
-    // Тільки реальний resize вікна (не visualViewport — він міняється при скролі на Safari)
     window.addEventListener("resize", onResize);
 
     return () => {
