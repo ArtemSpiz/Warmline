@@ -29,6 +29,11 @@ const Cards = [
   },
 ];
 
+// Повертає реальну висоту вьюпорту, безпечну для Safari
+function getViewportHeight(): number {
+  return window.visualViewport?.height ?? window.innerHeight;
+}
+
 function HowItWorks() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
@@ -44,68 +49,92 @@ function HowItWorks() {
     const isMobile = window.innerWidth < 768;
     const totalCards = cards.length;
 
-    const slideHeight = isMobile
-      ? (cardsRef.current[0]?.offsetHeight ?? window.innerHeight)
-      : window.innerHeight;
+    function init() {
+      const vh = getViewportHeight();
 
-    const scrollDistance = isMobile
-      ? (totalCards - 1) * slideHeight + 500
-      : (totalCards - 1) * slideHeight;
+      const slideHeight = isMobile
+        ? (cardsRef.current[0]?.offsetHeight ?? vh)
+        : vh;
 
-    section.style.minHeight = `${scrollDistance + window.innerHeight}px`;
+      // +200 — запас щоб Chrome не наїжджав на наступний блок
+      const extraPadding = isMobile ? 600 : 200;
+      const scrollDistance = (totalCards - 1) * slideHeight + extraPadding;
 
-    cards.forEach((card, i) => {
-      if (i === 0) return;
-      gsap.set(card, {
-        xPercent: 105,
-        zIndex: i + 1,
+      section!.style.minHeight = `${scrollDistance + vh}px`;
+
+      // Скидаємо стан карток
+      cards.forEach((card, i) => {
+        if (i === 0) {
+          gsap.set(card, { xPercent: 0, scale: 1, zIndex: 1 });
+        } else {
+          gsap.set(card, { xPercent: 105, scale: 1, zIndex: i + 1 });
+        }
       });
-    });
 
-    gsap.set(cards[0], { zIndex: 1 });
-
-    ScrollTrigger.create({
-      trigger: section,
-      start: "top top",
-      end: `+=${scrollDistance}`,
-      pin: sticky,
-      pinSpacing: false,
-      markers: true,
-    });
-
-    cards.forEach((card, i) => {
-      if (i === 0) return;
-
-      const startProgress = (i - 1) / (totalCards - 1);
+      ScrollTrigger.getAll().forEach((t) => t.kill());
 
       ScrollTrigger.create({
         trigger: section,
-        start: `top+=${startProgress * scrollDistance} top`,
-        end: `top+=${(i / (totalCards - 1)) * scrollDistance} top`,
-        scrub: 0.6,
-        onUpdate: (self) => {
-          gsap.set(card, {
-            xPercent: gsap.utils.interpolate(105, 0, self.progress),
-          });
-          if (i > 1) {
-            gsap.set(cards[i - 1], {
-              scale: gsap.utils.interpolate(1, 0.96, self.progress),
-            });
-          }
-        },
-        onLeave: () => {
-          gsap.set(card, { xPercent: 0 });
-        },
-        onEnterBack: () => {
-          gsap.set(card, { xPercent: 105 });
-          if (i > 1) gsap.set(cards[i - 1], { scale: 1 });
-        },
+        start: "top top",
+        end: `+=${scrollDistance}`,
+        pin: sticky,
+        pinSpacing: false,
+        // markers: true, // розкоментуй для дебагу
       });
+
+      cards.forEach((card, i) => {
+        if (i === 0) return;
+
+        const startProgress = (i - 1) / (totalCards - 1);
+
+        ScrollTrigger.create({
+          trigger: section,
+          start: `top+=${startProgress * scrollDistance} top`,
+          end: `top+=${(i / (totalCards - 1)) * scrollDistance} top`,
+          scrub: 0.6,
+          onUpdate: (self) => {
+            gsap.set(card, {
+              xPercent: gsap.utils.interpolate(105, 0, self.progress),
+            });
+            if (i > 1) {
+              gsap.set(cards[i - 1], {
+                scale: gsap.utils.interpolate(1, 0.96, self.progress),
+              });
+            }
+          },
+          onLeave: () => {
+            gsap.set(card, { xPercent: 0 });
+          },
+          onEnterBack: () => {
+            gsap.set(card, { xPercent: 105 });
+            if (i > 1) gsap.set(cards[i - 1], { scale: 1 });
+          },
+        });
+      });
+
+      ScrollTrigger.refresh();
+    }
+
+    // Чекаємо повного рендеру перед ініціалізацією (критично для Safari)
+    const raf = requestAnimationFrame(() => {
+      setTimeout(init, 100);
     });
 
+    // Переініціалізація при зміні розміру (ротація екрану тощо)
+    const onResize = () => {
+      init();
+    };
+    window.addEventListener("resize", onResize);
+
+    // Safari: visualViewport може змінюватися при скролі (адресний рядок)
+    window.visualViewport?.addEventListener("resize", onResize);
+
     return () => {
+      cancelAnimationFrame(raf);
       ScrollTrigger.getAll().forEach((t) => t.kill());
       section.style.minHeight = "";
+      window.removeEventListener("resize", onResize);
+      window.visualViewport?.removeEventListener("resize", onResize);
     };
   }, []);
 
@@ -113,7 +142,7 @@ function HowItWorks() {
     <div ref={sectionRef} className="relative">
       <div
         ref={stickyRef}
-        className="h-screen flex items-center justify-center overflow-hidden"
+        className="h-[100svh] flex items-center justify-center overflow-hidden"
       >
         <div className="relative w-full max-w-[1600px] px-4 mx-auto max-md:px-0">
           <div
@@ -129,7 +158,7 @@ function HowItWorks() {
                 className="absolute inset-0 flex flex-row max-md:flex-col rounded-xl overflow-hidden will-change-transform max-md:h-182 max-md:my-auto"
                 style={{ zIndex: i + 1 }}
               >
-                <div className="w-1/2 h-full max-md:w-full max-md:h-[55%] ">
+                <div className="w-1/2 h-full max-md:w-full max-md:h-[55%]">
                   <img
                     src={card.image}
                     className="w-full h-full object-cover"
@@ -137,7 +166,7 @@ function HowItWorks() {
                   />
                 </div>
 
-                <div className="w-1/2 max-md:w-full max-md:pt-12  max-md:h-[45%] bg-[#F5F5F5] flex flex-col justify-between p-10 max-xl:p-8 max-md:p-6 ">
+                <div className="w-1/2 max-md:w-full max-md:pt-12 max-md:h-[45%] bg-[#F5F5F5] flex flex-col justify-between p-10 max-xl:p-8 max-md:p-6">
                   <div className="flex flex-col gap-5">
                     <BlockTitle
                       title={card.title}
