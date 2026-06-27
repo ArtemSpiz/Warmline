@@ -56,13 +56,11 @@ function HowItWorks() {
         ? (cardsRef.current[0]?.offsetHeight ?? vh)
         : vh;
 
-      // +200 — запас щоб Chrome не наїжджав на наступний блок
       const extraPadding = isMobile ? 600 : 200;
       const scrollDistance = (totalCards - 1) * slideHeight + extraPadding;
 
       section!.style.minHeight = `${scrollDistance + vh}px`;
 
-      // Скидаємо стан карток
       cards.forEach((card, i) => {
         if (i === 0) {
           gsap.set(card, { xPercent: 0, scale: 1, zIndex: 1 });
@@ -79,7 +77,6 @@ function HowItWorks() {
         end: `+=${scrollDistance}`,
         pin: sticky,
         pinSpacing: false,
-        // markers: true, // розкоментуй для дебагу
       });
 
       cards.forEach((card, i) => {
@@ -115,26 +112,26 @@ function HowItWorks() {
       ScrollTrigger.refresh();
     }
 
-    // Чекаємо повного рендеру перед ініціалізацією (критично для Safari)
     const raf = requestAnimationFrame(() => {
       setTimeout(init, 100);
     });
 
-    // Переініціалізація при зміні розміру (ротація екрану тощо)
+    // Debounce — перебудовуємо тільки після зупинки resize, не під час скролу
+    let resizeTimer: ReturnType<typeof setTimeout>;
     const onResize = () => {
-      init();
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(init, 250);
     };
-    window.addEventListener("resize", onResize);
 
-    // Safari: visualViewport може змінюватися при скролі (адресний рядок)
-    window.visualViewport?.addEventListener("resize", onResize);
+    // Тільки реальний resize вікна (не visualViewport — він міняється при скролі на Safari)
+    window.addEventListener("resize", onResize);
 
     return () => {
       cancelAnimationFrame(raf);
+      clearTimeout(resizeTimer);
       ScrollTrigger.getAll().forEach((t) => t.kill());
       section.style.minHeight = "";
       window.removeEventListener("resize", onResize);
-      window.visualViewport?.removeEventListener("resize", onResize);
     };
   }, []);
 
